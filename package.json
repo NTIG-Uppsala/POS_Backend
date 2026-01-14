@@ -20,6 +20,7 @@
   "homepage": "https://github.com/NTIG-Uppsala/POS_Backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "sqlite3": "^5.1.7"
   }
 }
