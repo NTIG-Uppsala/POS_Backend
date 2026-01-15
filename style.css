@@ -1,29 +1,27 @@
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
 }
 
 table {
-   border-collapse: collapse;
-   width: 100%;
-   margin-bottom: 20px; 
+  border-collapse: collapse;
+  width: 100%;
 }
 
 th, td {
-    border: 1px solid black;
-    padding: 8px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
 }
 
 th {
-    background-color: #f4f4f4;
+  background: #f0f0f0;
 }
 
-form input {
-    padding: 6px;
-    margin-left: 6px;
-}
-
-button {
-    padding: 6px, 12px;
-    cursor: pointer;
+input[type="number"] {
+  width: 70px;
 }
