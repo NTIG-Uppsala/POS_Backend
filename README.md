@@ -11,3 +11,7 @@
 
 ## Link to frontend
 LINK: https://github.com/NTIG-Uppsala/POS
+
+## PAKET OCH PROGRAM
+1. Node.js
+2. Visual Studio Code.
