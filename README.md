@@ -9,4 +9,4 @@
 3. När man klickar på spara så ska databasen uppdateras.
 
 ## Link to frontend
-LINK: https://github.com/NTIG-Uppsala/POS/edit/main/README.md
+LINK: https://github.com/NTIG-Uppsala/POS
