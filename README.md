@@ -16,4 +16,7 @@ LINK: https://github.com/NTIG-Uppsala/POS
 2. Visual Studio Code.
 
 ## STARTA SERVERN I TERMINAL 
-Skriv in node server.js
+
+1. via ssh logga in på servern i terminal (Får inloggningsuppgifter av Stefan)
+2. Skriv in node server.js för att starta servern.
+
