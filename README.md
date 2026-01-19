@@ -15,5 +15,5 @@ LINK: https://github.com/NTIG-Uppsala/POS
 1. Node.js
 2. Visual Studio Code.
 
-### STARTA SERVERN I TERMINAL 
+## STARTA SERVERN I TERMINAL 
 Skriv in node server.js
