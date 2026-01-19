@@ -2,10 +2,9 @@
 
 ## VAD SOM BEHÖVS GÖRAS
 
-1. Få servern att fungera.
-2. Se till så att API laddar in.
-3. Skapa en spara knapp för admin panel webbsidan.
-4. När man klickar på spara så ska databasen uppdateras.
+1. Skapa en api endpoint som tar emot antal sålda av en viss produkt och minskar i lagret.
+2. Utgå ifrån att backenddatabasen har samma struktur som frontenddatabasen
+3. Kanske fixa upp webbservern lite så den ser lite bättre ut.
 
 ## LINK TILL FRONTEND
 LINK: https://github.com/NTIG-Uppsala/POS
