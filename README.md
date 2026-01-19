@@ -1,17 +1,19 @@
 # POS_Backend
 
-### Starta backend server i terminal: node server.js
+## VAD SOM BEHÖVS GÖRAS
 
-## TO DO
+1. Få servern att fungera.
+2. Se till så att API laddar in.
+3. Skapa en spara knapp för admin panel webbsidan.
+4. När man klickar på spara så ska databasen uppdateras.
+5. Fixa så att adressen för webbsidan inte är sin ip adress.
 
-1. Få igång Servern (Lycka till)
-2. Skapa en spara knapp för admin panel webbsidan.
-3. När man klickar på spara så ska databasen uppdateras.
-4. Fixa så att adressen för webbsidan inte är sin ip adress.
-
-## Link to frontend
+## LINK TILL FRONTEND
 LINK: https://github.com/NTIG-Uppsala/POS
 
 ## PAKET OCH PROGRAM
 1. Node.js
 2. Visual Studio Code.
+
+### STARTA SERVERN I TERMINAL 
+Skriv in node server.js
