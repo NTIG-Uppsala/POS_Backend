@@ -1,8 +1,8 @@
 // server.js
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
 const app = express();
 const PORT = 3000;
@@ -10,19 +10,21 @@ const PORT = 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Servera frontend-filer (index.html, script.js, style.css)
 app.use(express.static(__dirname));
 
-// Skapa / anslut till SQLite
-const dbPath = path.join(__dirname, "products.db");
-const db = new sqlite3.Database(dbPath, (err) => {
+// SQLite-databas
+
+const db = new sqlite3.Database("./products.db", (err) => {
   if (err) {
-    console.error("Fel vid anslutning till DB:", err);
+    console.error("Kunde inte öppna databasen:", err.message);
   } else {
-    console.log("Ansluten till SQLite DB");
+    console.log("SQLite-databas ansluten");
   }
 });
 
-// Skapa tabellen om den inte finns
+// Skapa tabell + fyll med startdata om den är tom
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS products (
@@ -33,69 +35,82 @@ db.serialize(() => {
     )
   `);
 
-  // Kontrollera om tabellen är tom, lägg in produkter
   db.get("SELECT COUNT(*) AS count FROM products", (err, row) => {
     if (err) {
       console.error("Fel vid kontroll av produkter:", err);
-    } else if (row.count === 0) {
-      const stmt = db.prepare("INSERT INTO products (category, name, stock) VALUES (?, ?, ?)");
-      const products = [
-        { category: "Tobak", name: "Marlboro Red (20-pack)", stock: 100 },
-        { category: "Tobak", name: "Camel Blue (20-pack)", stock: 100 },
-        { category: "Tobak", name: "L&M Filter (20-pack)", stock: 100 },
-        { category: "Tobak", name: "Skruf Original Portion", stock: 100 },
-        { category: "Tobak", name: "Göteborgs Rapé White Portion", stock: 100 },
-        { category: "Godis", name: "Marabou Mjölkchoklad 100 g", stock: 100 },
-        { category: "Godis", name: "Daim Dubbel", stock: 100 },
-        { category: "Godis", name: "Kexchoklad", stock: 100 },
-        { category: "Godis", name: "Malaco Gott & Blandat 160 g", stock: 100 },
-        { category: "Enkel Mat", name: "Korv med bröd", stock: 100 },
-        { category: "Enkel Mat", name: "Varm toast (ost & skinka)", stock: 100 },
-        { category: "Enkel Mat", name: "Pirog (Köttfärs)", stock: 100 },
-        { category: "Enkel Mat", name: "Färdig sallad (Kyckling)", stock: 100 },
-        { category: "Enkel Mat", name: "Panini (Mozzarella & Pesto)", stock: 100 },
-        { category: "Tidningar", name: "Aftonbladet (Dagens)", stock: 100 },
-        { category: "Tidningar", name: "Expressen (Dagens)", stock: 100 },
-        { category: "Tidningar", name: "Illustrerad Vetenskap", stock: 100 },
-        { category: "Tidningar", name: "Kalle Anka & Co", stock: 100 },
-        { category: "Tidningar", name: "Allt om Mat", stock: 100 }
+      return;
+    }
+
+    if (row.count === 0) {
+      const stmt = db.prepare(
+        "INSERT INTO products (id, category, name, stock) VALUES (?, ?, ?, ?)"
+      );
+
+      const initialProducts = [
+        [1, "Tobak", "Marlboro Red (20-pack)", 100],
+        [2, "Tobak", "Camel Blue (20-pack)", 100],
+        [3, "Tobak", "L&M Filter (20-pack)", 100],
+        [4, "Tobak", "Skruf Original Portion", 100],
+        [5, "Tobak", "Göteborgs Rapé White Portion", 100],
+        [6, "Godis", "Marabou Mjölkchoklad 100 g", 100],
+        [7, "Godis", "Daim Dubbel", 100],
+        [8, "Godis", "Kexchoklad", 100],
+        [9, "Godis", "Malaco Gott & Blandat 160 g", 100],
+        [10, "Enkel Mat", "Korv med bröd", 100],
+        [11, "Enkel Mat", "Varm toast (ost & skinka)", 100],
+        [12, "Enkel Mat", "Pirog (Köttfärs)", 100],
+        [13, "Enkel Mat", "Färdig sallad (kyckling)", 100],
+        [14, "Enkel Mat", "Panini (mozzarella & pesto)", 100],
+        [15, "Tidningar", "Aftonbladet (Dagens)", 100],
+        [16, "Tidningar", "Expressen (Dagens)", 100],
+        [17, "Tidningar", "Illustrerad Vetenskap", 100],
+        [18, "Tidningar", "Kalle Anka & Co", 100],
+        [19, "Tidningar", "Allt om Mat", 100]
       ];
 
-      for (const p of products) {
-        stmt.run(p.category, p.name, p.stock);
-      }
+      initialProducts.forEach(p => stmt.run(p));
+      stmt.finalize();
 
-      stmt.finalize(() => console.log("Produkter skapade i DB"));
+      console.log("Produkter skapade med startlager 100");
     }
   });
 });
 
+// API-endpoints
+
 // Hämta alla produkter
 app.get("/products", (req, res) => {
-  db.all("SELECT * FROM products ORDER BY id", (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
+  db.all("SELECT * FROM products", (err, rows) => {
+    if (err) {
+      return res.status(500).json(err);
+    }
     res.json(rows);
   });
 });
 
-// Uppdatera lagersaldo
+// Uppdatera lagersaldo (sätt nytt värde)
 app.put("/products/:id/stock", (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const { stock } = req.body;
 
   if (typeof stock !== "number" || stock < 0) {
-    return res.status(400).json({ error: "Ogiltigt lagervärde" });
+    return res.status(400).json({ error: "Ogiltigt lagersaldo" });
   }
 
-  db.run("UPDATE products SET stock = ? WHERE id = ?", [stock, id], function(err) {
-    if (err) return res.status(500).json({ error: err.message });
-    if (this.changes === 0) return res.status(404).json({ error: "Produkten hittades inte" });
-    res.json({ id, stock });
-  });
+  db.run(
+    "UPDATE products SET stock = ? WHERE id = ?",
+    [stock, id],
+    function (err) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      res.json({ success: true });
+    }
+  );
 });
 
-// Starta servern
+// Startar server
+
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-

@@ -1,37 +1,59 @@
 const API_URL = "/products";
-const tableBody = document.querySelector("#productTable tbody");
 
-async function loadProducts() {
-  const response = await fetch(API_URL);
-  const products = await response.json();
+document.addEventListener("DOMContentLoaded", () => {
+  const tableBody = document.getElementById("products-body");
 
-  tableBody.innerHTML = "";
+  async function loadProducts() {
+    try {
+      const response = await fetch(API_URL);
+      const products = await response.json();
 
-  products.forEach(product => {
-    const row = document.createElement("tr");
+      tableBody.innerHTML = "";
 
-    row.innerHTML = `
-      <td>${product.category}</td>
-      <td>${product.name}</td>
-      <td>
-        <button onclick="updateStock(${product.id}, -1)">−</button>
-        <span style="margin: 0 8px;">${product.stock}</span>
-        <button onclick="updateStock(${product.id}, 1)">+</button>
-      </td>
-    `;
+      products.forEach(product => {
+        const row = document.createElement("tr");
 
-    tableBody.appendChild(row);
-  });
-}
+        row.innerHTML = `
+          <td>${product.category}</td>
+          <td>${product.name}</td>
+          <td>
+            <input
+              type="number"
+              id="stock-${product.id}"
+              value="${product.stock}"
+              min="0"
+              style="width: 70px;"
+            />
+          </td>
+          <td>
+            <button onclick="updateStock(${product.id})">Spara</button>
+          </td>
+        `;
 
-async function updateStock(id, change) {
-  await fetch(`/products/${id}/stock`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ change })
-  });
+        tableBody.appendChild(row);
+      });
+    } catch (err) {
+      console.error("Fel vid laddning av produkter:", err);
+    }
+  }
 
-  loadProducts(); // uppdatera tabellen
-}
+  window.updateStock = async function (id) {
+    const input = document.getElementById(`stock-${id}`);
+    const newStock = parseInt(input.value, 10);
 
-loadProducts();
+    if (isNaN(newStock) || newStock < 0) {
+      alert("Ogiltigt lagersaldo");
+      return;
+    }
+
+    await fetch(`/products/${id}/stock`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stock: newStock })
+    });
+
+    loadProducts();
+  };
+
+  loadProducts();
+});
