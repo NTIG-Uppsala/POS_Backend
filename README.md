@@ -6,7 +6,6 @@
 2. Se till så att API laddar in.
 3. Skapa en spara knapp för admin panel webbsidan.
 4. När man klickar på spara så ska databasen uppdateras.
-5. Fixa så att adressen för webbsidan inte är sin ip adress.
 
 ## LINK TILL FRONTEND
 LINK: https://github.com/NTIG-Uppsala/POS
