@@ -16,5 +16,6 @@ LINK: https://github.com/NTIG-Uppsala/POS
 ## STARTA SERVERN I TERMINAL 
 
 1. via ssh logga in på servern i terminalen.
-2. Skriv in node server.js för att starta servern.
+2. gå in i POS_Backend mappen genom cd /root/POS_Backend.
+3. Skriv in node server.js för att starta servern.
 
