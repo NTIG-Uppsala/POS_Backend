@@ -6,8 +6,8 @@
 2. Utgå ifrån att backenddatabasen har samma struktur som frontenddatabasen
 3. Kanske fixa upp webbservern lite så den ser lite bättre ut.
 
-## LINK TILL FRONTEND
-LINK: https://github.com/NTIG-Uppsala/POS
+## LÄNK TILL FRONTEND
+LÄNK: https://github.com/NTIG-Uppsala/POS
 
 ## PAKET OCH PROGRAM
 1. Node.js
