@@ -14,9 +14,13 @@ LÄNK: https://github.com/NTIG-Uppsala/POS
 2. expressjs
 3. Visual Studio Code.
 
-## STARTA SERVERN I TERMINAL 
+##  SERVER SETUP I TERMINALEN (steg 2 och 4 behövs bara göras första gången) 
 
 1. via ssh logga in på servern i terminalen.
-2. gå in i POS_Backend mappen genom cd /root/POS_Backend.
-3. Skriv in node server.js för att starta servern.
+2. klona repositoryt med git clone
+3. kom in i projekt mappen med cd /root/POS_Backend.
+4. installera nodejs och expressjs i terminalen
+5. starta servern med node server.js
+   
+   
 
